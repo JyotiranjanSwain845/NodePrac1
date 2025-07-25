@@ -27,7 +27,7 @@ async function getAllUsers(req,res){
 
 async function getUserById(req,res) {
     const userId = req.params.id;
-    const userById = await User.findById({"id":userId})
+    const userById = await User.findById(userId)
     if(!userById) res.status(404).json({msg:"Not found"})
     res.status(200).json({userById});
 }
@@ -35,7 +35,7 @@ async function getUserById(req,res) {
 async function updateUserById(req,res){
     const userId = req.params.id;
     const {name,email} = req.body;
-    await User.findOneAndUpdate({"id":userId,"name":name,"email":email})
+    await User.findOneAndUpdate({"_id":userId},{name,email})
     .then(()=>console.log('updated successfully'))
     .catch((err)=>console.log(err))
 }

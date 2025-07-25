@@ -8,7 +8,7 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded({extended:true}))
 
-mongoose.connect("mongodb://127.0.0.1:27017/?directConnection=true&serverSelectionTimeoutMS=2000&appName=mongosh+2.2.1/anyHow").then(()=>console.log('database connected successfully'))
+mongoose.connect("mongodb://127.0.0.1:27017/anyHow").then(()=>console.log('database connected successfully')).catch((err)=>console.log(err));
 
 
 app.use('/user',userRoute)
