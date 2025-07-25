@@ -6,8 +6,12 @@ function handleUserSignup(req,res){
         name : name,
         email : email,
         password : password
-    }).then(()=>console.log('User Created Successfully!'))
-    .catch((err)=>console.log(err));
+    }).then(()=>{
+        res.status(201).json({ message: 'User created successfully' });
+    })
+    .catch((err)=>{
+        res.status(500).json({ message: 'failed to signup' });
+    });
 }
 
 async function handleUserSignin(req,res){
@@ -20,9 +24,8 @@ async function handleUserSignin(req,res){
 
 async function getAllUsers(req,res){
     const allUsers = await User.find({})
-    if(!allUsers) res.status(404).json({msg:"Not found"})
-    res.status(200).json({allUsers});
-
+    if(allUsers.length==0) res.json({msg:"No Users Exist yet"})
+    res.status(200).json(allUsers);
 }
 
 async function getUserById(req,res) {
@@ -32,12 +35,25 @@ async function getUserById(req,res) {
     res.status(200).json({userById});
 }
 
-async function updateUserById(req,res){
+function updateUserById(req,res){
     const userId = req.params.id;
     const {name,email} = req.body;
-    await User.findOneAndUpdate({"_id":userId},{name,email})
+    User.findOneAndUpdate({"_id":userId},{name,email})
     .then(()=>console.log('updated successfully'))
     .catch((err)=>console.log(err))
 }
 
-module.exports = {handleUserSignup,handleUserSignin,getAllUsers,getUserById,updateUserById};
+function deleteUserById(req,res){
+    const userId = req.params.id;
+    User.findByIdAndDelete(userId)
+    .then(()=>{
+        res.status(200).json({msg:"user removed"})
+    }).catch(()=>{
+        res.json({msg:'some error occured!'})
+    })
+}
+
+
+
+
+module.exports = {handleUserSignup,handleUserSignin,getAllUsers,getUserById,updateUserById,deleteUserById};
