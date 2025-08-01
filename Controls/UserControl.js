@@ -10,7 +10,8 @@ function handleUserSignup(req,res){
         res.status(201).json({ message: 'User created successfully' });
     })
     .catch((err)=>{
-        res.status(500).json({ message: 'failed to signup' });
+        console.log(err);
+        res.status(500).json({ message: 'failed to signup',err:err.message});
     });
 }
 
